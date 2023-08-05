@@ -1,0 +1,7 @@
+pymongo
+configparser
+unidecode
+pandas
+numpy
+nltk
+requests

@@ -1,0 +1,3 @@
+process_daily_item: Xử lí bài viết thu thập được từ scrapy sang database chính
+process_poi: Làm giàu dữ liệu, thêm các tiện ích xung quanh cho dự án mới
+calculate_signature_project: Tính toán lại các chỉ số cho dự án như số bài giá trung bình, .....
