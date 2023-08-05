@@ -1,2 +1,2 @@
 process-env/
-.cfg
+*.cfg
