@@ -20,4 +20,5 @@ class Logging:
         elif isinstance(message, dict):
             for key, value in message.items():
                 log_message[key] = value
+        print(log_message)
         self.collection.insert_one(log_message)

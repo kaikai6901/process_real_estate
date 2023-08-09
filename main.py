@@ -8,6 +8,7 @@ def process():
     client = get_mongodb_client()
     logging = Logging(client=client)
     item_process = ProcesDailyItem(client=client, logging=logging)
+    item_process.update_last_time_in_page()
     this_process_id, raw_data = item_process.get_news()
     used_data = item_process.remove_missing_address(raw_data=raw_data)
     used_data_no_missing = item_process.remove_missing_price(used_data=used_data)

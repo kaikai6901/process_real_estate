@@ -59,6 +59,8 @@ def get_formatted_address(commune, district, province):
     return ', '.join(address)
 
 def get_formatted_string(s: str):
+    if s is None:
+        return None
     return unidecode(s).strip().lower()
 
 def string_equal(sentences_1, sentences_2):
@@ -101,6 +103,8 @@ def calculate_distance(loc1, loc2):
     return distance
 
 def get_formatted_compound(compound):
+    if compound is None:
+        return None
     formatted_compound = {}
     for key, value in compound.items():
         formatted_compound[key] = get_formatted_string(value)

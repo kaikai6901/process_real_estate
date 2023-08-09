@@ -57,15 +57,34 @@ class ProcesDailyItem():
         self.logging = logging
         self.step = 'process_item'
 
-    ### Get news not process
-    def get_news(self) -> list:
-        self.logging.log(event='get_news', message='start', step=self.step)
+    def get_latest_process(self):
+        self.logging.log(event='get_latest_process', message='start', step=self.step)
         news_collection = self.client[DES_DATABASE][NEWS_COLLECTION]
-        item_collection = self.client[RAW_DATABASE][ITEM_COLLECTION]
 
         ## Get latest process
         max_createdAt = news_collection.find_one({}, sort=[("createdAt", -1)])["createdAt"]
         max_process_id = news_collection.find_one({}, sort=[("process_id", -1)])["process_id"]
+        self.logging.log(event='get_latest_process', message='end', step=self.step)
+        return max_createdAt, max_process_id
+
+
+    def update_last_time_in_page(self):
+        self.logging.log(event='update_last_time_in_page', message='start', step=self.step)
+        max_createdAt, max_process_id = self.get_latest_process()
+        item_collection = self.client[RAW_DATABASE][ITEM_COLLECTION]
+        news_collection = self.client[DES_DATABASE][NEWS_COLLECTION]
+        update_items =  list(item_collection.find({'updateTime': {'$gt': max_createdAt}}, {'news_id': 1, 'last_time_in_page': 1}))
+        for item in tqdm(update_items):
+            news_collection.update_one({'news_id': item['news_id']}, {'$set': {'last_time_in_page': item['last_time_in_page']}})
+        self.logging.log(event='update_last_time_in_page', message='end', step=self.step)
+        return
+    ### Get news not process
+    def get_news(self) -> list:
+        self.logging.log(event='get_news', message='start', step=self.step)
+        item_collection = self.client[RAW_DATABASE][ITEM_COLLECTION]
+
+        ## Get latest process
+        max_createdAt, max_process_id = self.get_latest_process()
 
         this_process_id = max_process_id + 1
 
